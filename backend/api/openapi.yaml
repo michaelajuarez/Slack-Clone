@@ -1,0 +1,444 @@
+#
+# CSE183 Assignment 8 Backend
+#
+
+openapi: '3.0.3'
+
+info:
+  description: CSE183 Assignment 8 Backend
+  version: 0.1.0
+  title: CSE183 Assignment 8 Backend
+
+servers:
+  - url: http://localhost:3010/v0
+
+paths:
+  /authenticate:
+    post:
+      description: test
+      requestBody:
+        description: test2
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                pass:
+                  type: string
+      responses:
+        200:
+          description: Application response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        401:
+          description: Failed authentication
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /dummy:
+    get:
+      description: Dummy Endpoint
+      responses:
+        200:
+          description: Succesful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DummyResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /users:
+    get:
+      description: Getting Users
+      parameters:
+      - name: username
+        in: query
+        description: User to Get
+        schema:
+          type: string
+      responses:
+        200:
+          description: Received Users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        404:
+          description: User Not Found
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+  /workspace:
+    get:
+      description: Getting Workspace
+      parameters:
+      - name: workspace
+        in: query
+        description: Workspace to Get
+        schema:
+          type: string
+      responses:
+        200:
+          description: Received Workspaces
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceResponse'
+        404:
+          description: Workspaces Not Found
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /channel:
+    get:
+      description: Getting Channel
+      responses:
+        200:
+          description: Received Channels
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelResponse'
+        404:
+          description: Channels Not Found
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /channel/{id}:
+    get:
+      description: Getting specific channel
+      parameters:
+      - name: id
+        in: path
+        description: id of channel
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Received Channel/s
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelResponse'
+        404:
+          description: Channel/s Not Found
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /message:
+    get:
+      description: Getting Message/s
+      parameters:
+      - name: dms
+        in: query
+        description: Get dms
+        schema:
+          type: string
+      responses:
+        200:
+          description: Received Message/s
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        404:
+          description: Message/s Not Found
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      description: Create New Message
+      requestBody:
+        description: testing
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                channel:
+                  type: string
+                name:
+                  type: string
+      responses:
+        200:
+          description: Created New Message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+        400:
+          description: Could Not Create New Message
+  
+  /message/{id}:
+    get:
+      description: Getting message from specific channel
+      parameters:
+      - name: id
+        in: path
+        description: id of channel
+        required: true
+        schema:
+          type: string
+      - name: bool
+        in: query
+        description: find channel
+        schema:
+          type: string
+      responses:
+        200:
+          description: Received Message/s
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        404:
+          description: Message/s Not Found
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /reply:
+    get:
+      description: Getting Reply/s
+      responses:
+        200:
+          description: Received Reply/s
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReplyResponse'
+        404:
+          description: Reply/s Not Found
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      description: Create New Reply
+      requestBody:
+        description: testing stage
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reply:
+                  type: string
+                message:
+                  type: string
+                name:
+                  type: string
+      responses:
+        200:
+          description: Created New Reply
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reply'
+        400:
+          description: Could Not Create New Reply
+
+  /reply/{id}:
+    get:
+      description: Getting message from specific message
+      parameters:
+      - name: id
+        in: path
+        description: id of message
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Received Reply/s
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReplyResponse'
+        404:
+          description: Reply/s Not Found
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+
+    DummyResponse:
+      required:
+        - message
+      properties:
+        message:
+          type: string
+    
+    UserResponse:
+      type: array
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+          
+    User:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        pass:
+          type: string
+        workspace:
+          type: string
+        status:
+          type: string
+      
+    WorkspaceResponse:
+      type: array
+      properties:
+        workspaces:
+          type: array
+          items:
+            $ref: '#/components/schemas/Workspace'
+
+    Workspace:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        users:
+          type: array
+
+    ChannelResponse:
+      type: array
+      properties:
+        channels:
+          type: array
+          items:
+            $ref: '#/components/schemas/Channel'
+
+    Channel:
+      type: object
+      properties:
+        id:
+          type: string
+        workspaceid:
+          type: string
+        name:
+          type: string
+        users:
+          type: array
+
+    MessageResponse:
+      type: array
+      properties:
+        channels:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+
+    Message:
+      type: object
+      properties:
+        id:
+          type: string
+        createdby:
+          type: string
+        createdtime:
+          type: string
+        content:
+          type: string
+        #replies:
+        #  type: string
+        reactions:
+          type: string
+
+    ReplyResponse:
+      type: array
+      properties:
+        channels:
+          type: array
+          items:
+            $ref: '#/components/schemas/Reply'
+
+    Reply:
+      type: object
+      properties:
+        id:
+          type: string
+        createdby:
+          type: string
+        createdtime:
+          type: string
+        content:
+          type: string
+        reactions:
+          type: string
+
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    # optional, arbitrary value for documentation purposes
+
+security:
+  - bearerAuth: []         # use the same name as above
