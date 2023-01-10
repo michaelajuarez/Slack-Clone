@@ -1,3 +1,3 @@
-# asg8
+# Slack Clone
 
-A Slack Clone, Kinda.# Slack-Clone
+A Slack Clone, Kinda.
